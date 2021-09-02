@@ -10,7 +10,7 @@ export default function Sessoes() {
     const [filme, setFilme] = useState([]);
 
     useEffect(() => {
-        const promise = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/cineflex/movies/${idFilme}/showtimes`);
+        const promise = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/cineflex/movies/${idFilme}/showtimes`);
         promise.then((resp) => {
             setFilme(resp.data.days);
         });

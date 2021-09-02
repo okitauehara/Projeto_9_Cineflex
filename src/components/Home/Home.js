@@ -9,7 +9,7 @@ export default function Home() {
     const [filmes, setFilmes] = useState([])
     
     useEffect(() => {
-        const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/cineflex/movies");
+        const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v3/cineflex/movies");
         promise.then((resp) => {
             setFilmes(resp.data);
         });

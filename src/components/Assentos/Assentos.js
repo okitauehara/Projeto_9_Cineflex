@@ -1,60 +1,29 @@
 import "./Assentos.css";
 
+import { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
+
 export default function Assentos() {
+
+    const { idSessao } = useParams();
+    const [sessao, setSessao] = useState([]);
+    
+
+    useEffect(() => {
+        const promise = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/cineflex/showtimes/${idSessao}/seats`);
+        promise.then((resp) => {
+            setSessao(resp.data.seats);
+        });
+    }, []);
+
     return (
         <>
             <h1>Selecione o(s) assento(s)</h1>
             <ul className="assentos">
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
-                <li className="assento">01</li>
+            {sessao.map((assento) => (
+                <li key={assento.id} className={assento.isAvailable ? 'assento' : 'assento indisponivel'}>{(assento.name).padStart(2, '0')}</li>
+            ))}
             </ul>
             <ul className="bloco-legenda">
                 <div className="legenda">
