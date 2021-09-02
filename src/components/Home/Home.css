@@ -1,0 +1,30 @@
+h1 {
+    height: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+    font-size: 24px;
+    color: #293845;
+}
+.filmes {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0px 30px 30px 30px;
+    justify-content: space-between;
+}
+.filme {
+    width: 145px;
+    height: 209px;
+    box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.menu-img {
+    width: 129px;
+    height: 193px;
+}
