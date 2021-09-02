@@ -20,7 +20,7 @@ export default function Home() {
             <h1>Selecione o filme</h1>
             <section className="filmes">
                 {filmes.map((filme) => (
-                    <Link to={`/filme/${filme.id}`}>
+                    <Link to={`/sessoes/${filme.id}`}>
                         <div key={filme.id} className="filme">
                             <img className="menu-img" src={filme.posterURL} />
                         </div>

@@ -1,10 +1,10 @@
-import "./FilmeEscolhido.css";
+import "./Sessoes.css";
 
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
-export default function FilmeEscolhido() {
+export default function Sessoes() {
 
     const { idFilme } = useParams();
     const [filme, setFilme] = useState([]);
@@ -25,7 +25,7 @@ export default function FilmeEscolhido() {
                         <h2 className="data">{sessao.weekday} - {sessao.date}</h2>
                         <div className="horarios">
                         {sessao.showtimes.map((horario) => (
-                            <Link to={`/sessao/${horario.id}`} style={{textDecoration: 'none'}}>
+                            <Link to={`/assentos/${horario.id}`} style={{textDecoration: 'none'}}>
                                 <span key={horario.id} className="horario">{horario.name}</span>
                             </Link>
                         ))}

@@ -4,8 +4,8 @@ import "./style.css";
 
 import Navbar from "../Navbar/Navbar";
 import Home from "../Home/Home";
-import FilmeEscolhido from "../Filme_Escolhido/FilmeEscolhido";
-import SessaoEscolhida from "../Sessão_Escolhida/SessaoEscolhida";
+import Sessoes from "../Sessões/Sessoes";
+import Assentos from "../Assentos/Assentos";
 import Sucesso from "../Sucesso/Sucesso";
 
 export default function App() {
@@ -16,11 +16,11 @@ export default function App() {
 				<Route path="/" exact>
 					<Home />
 				</Route>
-				<Route path="/filme/:idFilme" exact>
-					<FilmeEscolhido />
+				<Route path="/sessoes/:idFilme" exact>
+					<Sessoes />
 				</Route>
-				<Route path="/sessao/:idSessao" exact>
-					<SessaoEscolhida />
+				<Route path="/assentos/:idSessao" exact>
+					<Assentos />
 				</Route>
 				<Route path="/sucesso" exact>
 					<Sucesso />
