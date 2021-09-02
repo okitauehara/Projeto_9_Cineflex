@@ -8,7 +8,7 @@ export default function Assentos() {
 
     const { idSessao } = useParams();
     const [sessao, setSessao] = useState([]);
-    
+    const [selecao, setSelecao] = useState('assento');
 
     useEffect(() => {
         const promise = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/cineflex/showtimes/${idSessao}/seats`);
@@ -22,7 +22,7 @@ export default function Assentos() {
             <h1>Selecione o(s) assento(s)</h1>
             <ul className="assentos">
             {sessao.map((assento) => (
-                <li key={assento.id} className={assento.isAvailable ? 'assento' : 'assento indisponivel'}>{(assento.name).padStart(2, '0')}</li>
+                <li key={assento.id} className={assento.isAvailable ? selecao : 'assento indisponivel'}>{(assento.name).padStart(2, '0')}</li>
             ))}
             </ul>
             <ul className="bloco-legenda">

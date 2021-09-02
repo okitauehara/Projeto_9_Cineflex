@@ -1,0 +1,21 @@
+.sucesso {
+    font-weight: 700;
+    color: #247a6b;
+}
+.confirmacao {
+    height: auto;
+    display: flex;
+    justify-content: flex-start;
+    font-weight: 700;
+    color: #293845;
+    margin: 25px 25px 5px 25px;
+}
+.dados-confirmacao {
+    font-weight: 400;
+    font-size: 22px;
+    color: #293845;
+    margin-left: 25px;
+}
+.centralizar-botao.home {
+    margin-top: 80px;
+}
