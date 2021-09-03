@@ -7,7 +7,7 @@
     margin: 0px 25px 25px 25px;
     justify-items: center;
 }
-.assento {
+li {
     width: 25px;
     height: 25px;
     background-color: #c3cfd9;
@@ -20,11 +20,11 @@
     font-weight: 400;
     font-size: 11px;
 }
-.assento.selecionado {
+.selecionado {
     background-color: #8dd7cf;
     border: 1px solid #45bdb0;
 }
-.assento.indisponivel {
+.indisponivel {
     background-color: #fbe192;
     border: 1px solid #f7c52b;
 }

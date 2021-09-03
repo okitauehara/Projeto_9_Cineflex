@@ -19,7 +19,7 @@ export default function App() {
 				<Route path="/sessoes/:idFilme" exact>
 					<Sessoes />
 				</Route>
-				<Route path="/assentos/:idSessao" exact>
+				<Route path="/sessoes/:idFilme/assentos/:idSessao" exact>
 					<Assentos />
 				</Route>
 				<Route path="/sucesso" exact>
