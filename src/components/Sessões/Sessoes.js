@@ -7,20 +7,24 @@ import axios from "axios";
 export default function Sessoes() {
 
     const { idFilme } = useParams();
-    const [filme, setFilme] = useState([]);
+    const [sessoes, setSessoes] = useState([]);
+    const [filme, setFilme] = useState([])
 
     useEffect(() => {
         const promise = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/cineflex/movies/${idFilme}/showtimes`);
         promise.then((resp) => {
-            setFilme(resp.data.days);
+            setSessoes(resp.data.days);
+            setFilme(resp.data);
         });
     }, [idFilme]);
+
+    console.log(filme)
 
     return (
         <>
             <h1>Selecione o horário</h1>
             <section className="sessoes">
-                {filme.map((sessao, index) => (
+                {sessoes.map((sessao, index) => (
                     <Sessao 
                     key={index}
                     diaSemana={sessao.weekday}
@@ -32,6 +36,15 @@ export default function Sessoes() {
                 ))}
             </section>
             <footer>
+                <div className="rodape">
+                    <div className="moldura">
+                        <img className="imagem-rodape" src={filme.posterURL} alt={filme.title} />
+                    </div>
+                    <div className="detalhes-filme">
+                        <span className="infos-rodape">{filme.title}</span>
+                        <span className="infos-rodape">Quinta-feira - 15:00</span>
+                    </div>
+                </div>
             </footer>
         </>
     );
