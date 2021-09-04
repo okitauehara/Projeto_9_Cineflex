@@ -16,6 +16,14 @@
     color: #293845;
     margin-left: 25px;
 }
-.centralizar-botao.home {
+.voltar-home {
+    width: 225px;
+    height: 42px;
+    background-color: #e8833a;
+    color: #ffffff;
+    border: none;
+    border-radius: 3px;
+    font-size: 18px;
+    text-align: center;
     margin-top: 80px;
 }

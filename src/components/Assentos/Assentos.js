@@ -1,13 +1,17 @@
 import "./Assentos.css";
 
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
 export default function Assentos() {
 
+    const { idFilme } = useParams();
     const { idSessao } = useParams();
     const [sessao, setSessao] = useState([]);
+    const [filme, setFilme] = useState([]);
+    const [dia, setDia] = useState([]);
+    const [horario, setHorario] = useState([]);
     const [selecao, setSelecao] = useState([]);
     const [nome, setNome] = useState('');
     const [cpf, setCpf] = useState('');
@@ -16,11 +20,14 @@ export default function Assentos() {
         const promise = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/cineflex/showtimes/${idSessao}/seats`);
         promise.then((resp) => {
             setSessao(resp.data.seats);
+            setFilme(resp.data.movie)
+            setDia(resp.data.day);
+            setHorario(resp.data.name);
         });
     }, [idSessao]);
 
     return (
-        <>
+        <main>
             <h1>Selecione o(s) assento(s)</h1>
             <ul className="assentos">
             {sessao.map((assento, index) => (
@@ -36,15 +43,31 @@ export default function Assentos() {
             </ul>
             <Legenda />
             <InfosComprador 
-            nome={nome}
-            cpf={cpf}
-            setNome={setNome}
-            setCpf={setCpf}
-            />
-            <div className="centralizar-botao">
-                <button>Reservar assento(s)</button>
-            </div>
-        </>
+                nome={nome}
+                cpf={cpf}
+                setNome={setNome}
+                setCpf={setCpf}
+                />
+            <Reservar
+                selecao={selecao}
+                nome={nome}
+                cpf={cpf}
+                idFilme={idFilme}
+                idSessao={idSessao}
+                nomeFilme={filme.title}
+                horario={horario}
+                diaMes={dia.date}
+                />
+            <footer>
+                <div className="rodape">
+                    <img className="imagem-rodape" src={filme.posterURL} alt={filme.title} />
+                    <div className="detalhes-filme">
+                        <span className="infos-rodape">{filme.title}</span>
+                        <span className="infos-rodape">{dia.weekday} - {dia.date}</span>
+                    </div>
+                </div>
+            </footer>
+        </main>
     );
 }
 
@@ -55,7 +78,7 @@ function Assento({ id, disponibilidade, numeroAssento, selecao, setSelecao }) {
 
     function selecionarAssento() {
         if (!disponibilidade) {
-            alert('Esse assento não está disponível')
+            alert('Esse assento não está disponível');
         } else if (selecionado === '') {
             setSelecionado('selecionado');
             setSelecao([...selecao, numeroAssento]);
@@ -100,4 +123,36 @@ function InfosComprador({ nome, cpf, setNome, setCpf }) {
             <input type="text" placeholder="Digite seu CPF..." value={cpf} onChange={e => setCpf(e.target.value)}></input>
         </div>
     );
+}
+
+function Reservar({ selecao, nome, cpf, idFilme, idSessao, horario, nomeFilme, diaMes }) {
+
+    const reserva = [
+        {
+            ids: selecao,
+            name: nome,
+            cpf: cpf
+        }
+    ];
+
+    if (selecao.length !== 0 && !!nome && !!cpf) {
+        function confirmarReserva() {
+            const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/cineflex/seats/book-many", reserva[0]);
+            promise.then((resp) => console.log(resp.data));
+        }
+
+        return (
+            <Link to={{pathname: `/sessoes/${idFilme}/assentos/${idSessao}/sucesso`, state: {selecao: selecao, nome: nome, cpf: cpf, nomeFilme: nomeFilme, horario: horario, diaMes: diaMes}}} style={{textDecoration: 'none'}}>
+                <div className="centralizar-botao">
+                    <button onClick={confirmarReserva} className="reservar ativado">Reservar assento(s)</button>
+                </div>
+            </Link>
+        );
+    } else {
+        return (
+            <div className="centralizar-botao">
+                <button className="reservar">Reservar assento(s)</button>
+            </div>
+        );
+    }
 }

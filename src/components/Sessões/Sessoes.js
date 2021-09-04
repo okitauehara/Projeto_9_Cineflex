@@ -18,35 +18,31 @@ export default function Sessoes() {
         });
     }, [idFilme]);
 
-    console.log(filme)
-
     return (
-        <>
+        <main>
             <h1>Selecione o horário</h1>
             <section className="sessoes">
                 {sessoes.map((sessao, index) => (
                     <Sessao 
-                    key={index}
-                    diaSemana={sessao.weekday}
-                    diaMes={sessao.date}
-                    horarios={sessao.showtimes}
-                    id={sessao.id}
-                    idFilme={idFilme}
-                    />
+                        key={index}
+                        diaSemana={sessao.weekday}
+                        diaMes={sessao.date}
+                        horarios={sessao.showtimes}
+                        id={sessao.id}
+                        idFilme={idFilme}
+                        />
                 ))}
             </section>
             <footer>
                 <div className="rodape">
-                    <div className="moldura">
-                        <img className="imagem-rodape" src={filme.posterURL} alt={filme.title} />
-                    </div>
+                    <img className="imagem-rodape" src={filme.posterURL} alt={filme.title} />
                     <div className="detalhes-filme">
                         <span className="infos-rodape">{filme.title}</span>
-                        <span className="infos-rodape">Quinta-feira - 15:00</span>
+                        <span className="infos-rodape"></span>
                     </div>
                 </div>
             </footer>
-        </>
+        </main>
     );
 }
 
@@ -57,11 +53,11 @@ function Sessao({ diaSemana, diaMes, horarios, id, idFilme }) {
             <div className="horarios">
             {horarios.map((horario, index) => (
             <Horario 
-            key={index}
-            idSessao={horario.id}
-            nome={horario.name}
-            idFilme={idFilme}
-            />))}
+                key={index}
+                idSessao={horario.id}
+                nome={horario.name}
+                idFilme={idFilme}
+                />))}
             </div>
         </div>
     );

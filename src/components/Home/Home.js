@@ -16,27 +16,25 @@ export default function Home() {
     }, []);
 
     return (
-        <>
+        <main>
             <h1>Selecione o filme</h1>
             <section className="filmes">
                 {filmes.map((filme, index) => (
                     <Filme 
-                    key={index}
-                    alt={filme.title}
-                    idFilme={filme.id}
-                    src={filme.posterURL}
-                    />))}
+                        key={index}
+                        alt={filme.title}
+                        idFilme={filme.id}
+                        src={filme.posterURL}
+                        />))}
             </section>
-        </>
+        </main>
     );
 }
 
 function Filme({ alt, idFilme, src }) {
     return (
         <Link to={`/sessoes/${idFilme}`}>
-            <div className="filme">
-                <img className="menu-img" src={src} alt={alt} />
-            </div>
+            <img className="menu-img" src={src} alt={alt} />
         </Link>
     );
 }
