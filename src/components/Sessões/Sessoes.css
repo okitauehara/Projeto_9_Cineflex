@@ -26,4 +26,6 @@
     padding: 10px 15px;
     border-radius: 3px;
 }
-
+.horario:hover {
+    filter: brightness(1.2);
+}

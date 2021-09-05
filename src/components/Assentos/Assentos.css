@@ -90,3 +90,22 @@ input::placeholder {
     background-color: #e8833a;
     pointer-events: all;
 }
+li:hover {
+    filter: brightness(0.8);
+    cursor: pointer;
+}
+.legenda > li:hover {
+    filter: none;
+    cursor: default;
+}
+.selecionado:hover {
+    filter: brightness(0.8);
+    cursor: pointer;
+}
+.indisponivel:hover {
+    cursor: not-allowed;
+}
+.reservar.ativado:hover {
+    filter: brightness(1.2);
+    cursor: pointer;
+}

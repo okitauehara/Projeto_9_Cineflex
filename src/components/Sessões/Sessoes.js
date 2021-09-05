@@ -1,4 +1,5 @@
 import "./Sessoes.css";
+import Loading from "../Loading/Loading";
 
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -18,32 +19,36 @@ export default function Sessoes() {
         });
     }, [idFilme]);
 
-    return (
-        <main>
-            <h1>Selecione o horário</h1>
-            <section className="sessoes">
-                {sessoes.map((sessao, index) => (
-                    <Sessao 
-                        key={index}
-                        diaSemana={sessao.weekday}
-                        diaMes={sessao.date}
-                        horarios={sessao.showtimes}
-                        id={sessao.id}
-                        idFilme={idFilme}
-                        />
-                ))}
-            </section>
-            <footer>
-                <div className="rodape">
-                    <img className="imagem-rodape" src={filme.posterURL} alt={filme.title} />
-                    <div className="detalhes-filme">
-                        <span className="infos-rodape">{filme.title}</span>
-                        <span className="infos-rodape"></span>
+    if (sessoes.length === 0) {
+        return <Loading />
+    } else {
+        return (
+            <main>
+                <h1>Selecione o horário</h1>
+                <section className="sessoes">
+                    {sessoes.map((sessao, index) => (
+                        <Sessao 
+                            key={index}
+                            diaSemana={sessao.weekday}
+                            diaMes={sessao.date}
+                            horarios={sessao.showtimes}
+                            id={sessao.id}
+                            idFilme={idFilme}
+                            />
+                    ))}
+                </section>
+                <footer>
+                    <div className="rodape">
+                        <img className="imagem-rodape" src={filme.posterURL} alt={filme.title} />
+                        <div className="detalhes-filme">
+                            <span className="infos-rodape">{filme.title}</span>
+                            <span className="infos-rodape"></span>
+                        </div>
                     </div>
-                </div>
-            </footer>
-        </main>
-    );
+                </footer>
+            </main>
+        );
+    }
 }
 
 function Sessao({ diaSemana, diaMes, horarios, id, idFilme }) {

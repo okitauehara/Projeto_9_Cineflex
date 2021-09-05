@@ -1,4 +1,5 @@
 import "./Home.css";
+import Loading from "../Loading/Loading";
 
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -15,20 +16,24 @@ export default function Home() {
         });
     }, []);
 
-    return (
-        <main>
-            <h1>Selecione o filme</h1>
-            <section className="filmes">
-                {filmes.map((filme, index) => (
-                    <Filme 
-                        key={index}
-                        alt={filme.title}
-                        idFilme={filme.id}
-                        src={filme.posterURL}
-                        />))}
-            </section>
-        </main>
-    );
+    if (filmes.length === 0) {
+        return <Loading />
+    } else {
+        return (
+            <main>
+                <h1>Selecione o filme</h1>
+                <section className="filmes">
+                    {filmes.map((filme, index) => (
+                        <Filme 
+                            key={index}
+                            alt={filme.title}
+                            idFilme={filme.id}
+                            src={filme.posterURL}
+                            />))}
+                </section>
+            </main>
+        );
+    }
 }
 
 function Filme({ alt, idFilme, src }) {

@@ -27,3 +27,7 @@
     text-align: center;
     margin-top: 80px;
 }
+.voltar-home:hover {
+    filter: brightness(1.2);
+    cursor: pointer;
+}

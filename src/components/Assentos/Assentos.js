@@ -1,13 +1,15 @@
 import "./Assentos.css";
+import Loading from "../Loading/Loading";
 
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 
 export default function Assentos() {
 
     const { idFilme } = useParams();
     const { idSessao } = useParams();
+    const history = useHistory();
     const [sessao, setSessao] = useState([]);
     const [filme, setFilme] = useState([]);
     const [dia, setDia] = useState([]);
@@ -26,49 +28,54 @@ export default function Assentos() {
         });
     }, [idSessao]);
 
-    return (
-        <main>
-            <h1>Selecione o(s) assento(s)</h1>
-            <ul className="assentos">
-            {sessao.map((assento, index) => (
-                <Assento 
-                key={index}
-                id={assento.id}
-                disponibilidade={assento.isAvailable}
-                numeroAssento={assento.name}
-                selecao={selecao}
-                setSelecao={setSelecao}
-                />
-            ))}
-            </ul>
-            <Legenda />
-            <InfosComprador 
-                nome={nome}
-                cpf={cpf}
-                setNome={setNome}
-                setCpf={setCpf}
-                />
-            <Reservar
-                selecao={selecao}
-                nome={nome}
-                cpf={cpf}
-                idFilme={idFilme}
-                idSessao={idSessao}
-                nomeFilme={filme.title}
-                horario={horario}
-                diaMes={dia.date}
-                />
-            <footer>
-                <div className="rodape">
-                    <img className="imagem-rodape" src={filme.posterURL} alt={filme.title} />
-                    <div className="detalhes-filme">
-                        <span className="infos-rodape">{filme.title}</span>
-                        <span className="infos-rodape">{dia.weekday} - {dia.date}</span>
+    if (sessao.length === 0) {
+        return <Loading />
+    } else {
+        return (
+            <main>
+                <h1>Selecione o(s) assento(s)</h1>
+                <ul className="assentos">
+                {sessao.map((assento, index) => (
+                    <Assento 
+                        key={index}
+                        id={assento.id}
+                        disponibilidade={assento.isAvailable}
+                        numeroAssento={assento.name}
+                        selecao={selecao}
+                        setSelecao={setSelecao}
+                        />
+                ))}
+                </ul>
+                <Legenda />
+                <InfosComprador 
+                    nome={nome}
+                    cpf={cpf}
+                    setNome={setNome}
+                    setCpf={setCpf}
+                    />
+                <Reservar
+                    selecao={selecao}
+                    nome={nome}
+                    cpf={cpf}
+                    idFilme={idFilme}
+                    idSessao={idSessao}
+                    nomeFilme={filme.title}
+                    horario={horario}
+                    diaMes={dia.date}
+                    history={history}
+                    />
+                <footer>
+                    <div className="rodape">
+                        <img className="imagem-rodape" src={filme.posterURL} alt={filme.title} />
+                        <div className="detalhes-filme">
+                            <span className="infos-rodape">{filme.title}</span>
+                            <span className="infos-rodape">{dia.weekday} - {dia.date}</span>
+                        </div>
                     </div>
-                </div>
-            </footer>
-        </main>
-    );
+                </footer>
+            </main>
+        );
+    }
 }
 
 function Assento({ id, disponibilidade, numeroAssento, selecao, setSelecao }) {
@@ -125,34 +132,27 @@ function InfosComprador({ nome, cpf, setNome, setCpf }) {
     );
 }
 
-function Reservar({ selecao, nome, cpf, idFilme, idSessao, horario, nomeFilme, diaMes }) {
+function Reservar({ selecao, nome, cpf, idFilme, idSessao, horario, nomeFilme, diaMes, history }) {
 
-    const reserva = [
-        {
-            ids: selecao,
-            name: nome,
-            cpf: cpf
-        }
-    ];
+    const reserva = {
+        ids: selecao,
+        name: nome,
+        cpf: cpf
+    };
+ 
 
-    if (selecao.length !== 0 && !!nome && !!cpf) {
-        function confirmarReserva() {
-            const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/cineflex/seats/book-many", reserva[0]);
-            promise.then((resp) => console.log(resp.data));
-        }
-
-        return (
-            <Link to={{pathname: `/sessoes/${idFilme}/assentos/${idSessao}/sucesso`, state: {selecao: selecao, nome: nome, cpf: cpf, nomeFilme: nomeFilme, horario: horario, diaMes: diaMes}}} style={{textDecoration: 'none'}}>
-                <div className="centralizar-botao">
-                    <button onClick={confirmarReserva} className="reservar ativado">Reservar assento(s)</button>
-                </div>
-            </Link>
-        );
-    } else {
-        return (
-            <div className="centralizar-botao">
-                <button className="reservar">Reservar assento(s)</button>
-            </div>
-        );
+    function confirmarReserva() {
+        const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/cineflex/seats/book-many", reserva);
+        promise.then(history.push({pathname: `/sessoes/${idFilme}/assentos/${idSessao}/sucesso`, state: {selecao: selecao, nome: nome, cpf: cpf, nomeFilme: nomeFilme, horario: horario, diaMes: diaMes}}));
+        promise.catch(() => alert("Erro"));
     }
+
+    console.log(reserva)
+
+    return (
+        <div className="centralizar-botao">
+            <button onClick={confirmarReserva} className={(selecao.length !== 0 && !!nome && !!cpf) ? 'reservar ativado' : 'reservar'}>Reservar assento(s)</button>
+        </div>
+    );
 }
+
