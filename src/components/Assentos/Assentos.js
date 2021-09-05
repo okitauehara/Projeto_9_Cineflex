@@ -1,5 +1,6 @@
 import "./Assentos.css";
 import Loading from "../Loading/Loading";
+import VoltarPagina from "../Voltar_Página/VoltarPagina";
 
 import { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
@@ -34,6 +35,7 @@ export default function Assentos() {
         return (
             <main>
                 <h1>Selecione o(s) assento(s)</h1>
+                <VoltarPagina caminho={`/sessoes/${idFilme}`}/>
                 <ul className="assentos">
                 {sessao.map((assento, index) => (
                     <Assento 
@@ -144,7 +146,7 @@ function Reservar({ selecao, nome, cpf, idFilme, idSessao, horario, nomeFilme, d
     function confirmarReserva() {
         const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/cineflex/seats/book-many", reserva);
         promise.then(history.push({pathname: `/sessoes/${idFilme}/assentos/${idSessao}/sucesso`, state: {selecao: selecao, nome: nome, cpf: cpf, nomeFilme: nomeFilme, horario: horario, diaMes: diaMes}}));
-        promise.catch(() => alert("Erro"));
+        promise.catch((erro) => alert(erro));
     }
 
     console.log(reserva)

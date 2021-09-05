@@ -1,13 +1,16 @@
 import "./Sessoes.css";
 import Loading from "../Loading/Loading";
+import VoltarPagina from "../Voltar_Página/VoltarPagina";
 
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import axios from "axios";
+
 
 export default function Sessoes() {
 
     const { idFilme } = useParams();
+    const history = useHistory();
     const [sessoes, setSessoes] = useState([]);
     const [filme, setFilme] = useState([])
 
@@ -25,6 +28,7 @@ export default function Sessoes() {
         return (
             <main>
                 <h1>Selecione o horário</h1>
+                <VoltarPagina caminho={"/"}/>
                 <section className="sessoes">
                     {sessoes.map((sessao, index) => (
                         <Sessao 
