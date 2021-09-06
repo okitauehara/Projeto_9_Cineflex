@@ -1,0 +1,9 @@
+.voltar {
+    width: 27px;
+    height: 27px;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 2;
+    color: #e8833a;
+}
