@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./reset.css";
 import "./style.css";
 
-import Navbar from "../Navbar/Navbar";
+import Navbar from "../../shared/Navbar/Navbar";
 import Home from "../Home/Home";
 import Sessoes from "../Sessões/Sessoes";
 import Assentos from "../Assentos/Assentos";

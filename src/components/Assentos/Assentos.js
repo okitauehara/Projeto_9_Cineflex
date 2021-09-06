@@ -1,16 +1,21 @@
 import "./Assentos.css";
-import Loading from "../Loading/Loading";
-import VoltarPagina from "../Voltar_Página/VoltarPagina";
+import Rodape from "../../shared/Rodape/Rodape";
+import Loading from "../../shared/Loading/Loading";
+import VoltarPagina from "../../shared/Voltar_Página/VoltarPagina";
 
 import { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, useLocation } from "react-router-dom";
 import axios from "axios";
+import Swal from 'sweetalert2'
 
-export default function Assentos() {
+export default function Assentos(props) {
 
     const { idFilme } = useParams();
     const { idSessao } = useParams();
     const history = useHistory();
+    const location = useLocation();
+    props = location.state;
+    
     const [sessao, setSessao] = useState([]);
     const [filme, setFilme] = useState([]);
     const [dia, setDia] = useState([]);
@@ -66,15 +71,10 @@ export default function Assentos() {
                     diaMes={dia.date}
                     history={history}
                     />
-                <footer>
-                    <div className="rodape">
-                        <img className="imagem-rodape" src={filme.posterURL} alt={filme.title} />
-                        <div className="detalhes-filme">
-                            <span className="infos-rodape">{filme.title}</span>
-                            <span className="infos-rodape">{dia.weekday} - {dia.date}</span>
-                        </div>
-                    </div>
-                </footer>
+                <Rodape
+                    filme={filme}
+                    dia={dia}
+                    />
             </main>
         );
     }
@@ -87,7 +87,11 @@ function Assento({ id, disponibilidade, numeroAssento, selecao, setSelecao }) {
 
     function selecionarAssento() {
         if (!disponibilidade) {
-            alert('Esse assento não está disponível');
+            Swal.fire({
+                icon: 'error',
+                title: 'Ops...',
+                text: 'Esse assento não está disponível',
+              })
         } else if (selecionado === '') {
             setSelecionado('selecionado');
             setSelecao([...selecao, numeroAssento]);
@@ -148,8 +152,6 @@ function Reservar({ selecao, nome, cpf, idFilme, idSessao, horario, nomeFilme, d
         promise.then(history.push({pathname: `/sessoes/${idFilme}/assentos/${idSessao}/sucesso`, state: {selecao: selecao, nome: nome, cpf: cpf, nomeFilme: nomeFilme, horario: horario, diaMes: diaMes}}));
         promise.catch((erro) => alert(erro));
     }
-
-    console.log(reserva)
 
     return (
         <div className="centralizar-botao">

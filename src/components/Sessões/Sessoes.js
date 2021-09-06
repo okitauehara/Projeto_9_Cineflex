@@ -1,16 +1,16 @@
 import "./Sessoes.css";
-import Loading from "../Loading/Loading";
-import VoltarPagina from "../Voltar_Página/VoltarPagina";
+import Rodape from "../../shared/Rodape/Rodape";
+import Loading from "../../shared/Loading/Loading";
+import VoltarPagina from "../../shared/Voltar_Página/VoltarPagina";
 
 import { useState, useEffect } from "react";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
 
 export default function Sessoes() {
 
     const { idFilme } = useParams();
-    const history = useHistory();
     const [sessoes, setSessoes] = useState([]);
     const [filme, setFilme] = useState([])
 
@@ -41,15 +41,7 @@ export default function Sessoes() {
                             />
                     ))}
                 </section>
-                <footer>
-                    <div className="rodape">
-                        <img className="imagem-rodape" src={filme.posterURL} alt={filme.title} />
-                        <div className="detalhes-filme">
-                            <span className="infos-rodape">{filme.title}</span>
-                            <span className="infos-rodape"></span>
-                        </div>
-                    </div>
-                </footer>
+                <Rodape filme={filme}/>
             </main>
         );
     }

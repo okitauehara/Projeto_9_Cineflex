@@ -1,5 +1,5 @@
 import "./Home.css";
-import Loading from "../Loading/Loading";
+import Loading from "../../shared/Loading/Loading";
 
 import axios from "axios";
 import { useEffect, useState } from "react";

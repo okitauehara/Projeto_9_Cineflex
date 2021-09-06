@@ -44,6 +44,7 @@ li {
     font-weight: 400;
     color: #4e5a65;
 }
+
 .infos-comprador {
     margin: 25px 25px 0px 25px;
 }
@@ -55,10 +56,11 @@ li {
 }
 input {
     width: 100%;
-    height: 51px;
+    height: 40px;
     border: 1px solid #d5d5d5;
     border-radius: 3px;
     margin-bottom: 10px;
+    outline: none;
 }
 input::placeholder {
     font-family: 'Roboto', sans-serif;
