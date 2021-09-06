@@ -15,7 +15,7 @@ export default function Sucesso(props) {
             <h2 className="dados-confirmacao">{props.diaMes} - {props.horario}</h2>
 
             <h1 className="confirmacao">Ingresso</h1>
-            {props.selecao.map((assento, index) => (
+            {props.selecaoNome.map((assento, index) => (
                 <h2 key={index} className="dados-confirmacao">Assento {assento.padStart(2, '0')}</h2>
             ))}
 

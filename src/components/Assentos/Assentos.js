@@ -4,23 +4,22 @@ import Loading from "../../shared/Loading/Loading";
 import VoltarPagina from "../../shared/Voltar_Página/VoltarPagina";
 
 import { useState, useEffect } from "react";
-import { useParams, useHistory, useLocation } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 import Swal from 'sweetalert2'
 
-export default function Assentos(props) {
+export default function Assentos() {
 
     const { idFilme } = useParams();
     const { idSessao } = useParams();
     const history = useHistory();
-    const location = useLocation();
-    props = location.state;
     
     const [sessao, setSessao] = useState([]);
     const [filme, setFilme] = useState([]);
     const [dia, setDia] = useState([]);
     const [horario, setHorario] = useState([]);
-    const [selecao, setSelecao] = useState([]);
+    const [selecaoId, setSelecaoId] = useState([]);
+    const [selecaoNome, setSelecaoNome] = useState([]);
     const [nome, setNome] = useState('');
     const [cpf, setCpf] = useState('');
 
@@ -45,11 +44,13 @@ export default function Assentos(props) {
                 {sessao.map((assento, index) => (
                     <Assento 
                         key={index}
-                        id={assento.id}
+                        idAssento={assento.id}
                         disponibilidade={assento.isAvailable}
-                        numeroAssento={assento.name}
-                        selecao={selecao}
-                        setSelecao={setSelecao}
+                        nomeAssento={assento.name}
+                        selecaoId={selecaoId}
+                        selecaoNome={selecaoNome}
+                        setSelecaoId={setSelecaoId}
+                        setSelecaoNome={setSelecaoNome}
                         />
                 ))}
                 </ul>
@@ -61,7 +62,8 @@ export default function Assentos(props) {
                     setCpf={setCpf}
                     />
                 <Reservar
-                    selecao={selecao}
+                    selecaoId={selecaoId}
+                    selecaoNome={selecaoNome}
                     nome={nome}
                     cpf={cpf}
                     idFilme={idFilme}
@@ -80,7 +82,7 @@ export default function Assentos(props) {
     }
 }
 
-function Assento({ id, disponibilidade, numeroAssento, selecao, setSelecao }) {
+function Assento({ idAssento, disponibilidade, nomeAssento, selecaoId, selecaoNome, setSelecaoId, setSelecaoNome }) {
 
     const [selecionado, setSelecionado] = useState('');
     
@@ -94,17 +96,21 @@ function Assento({ id, disponibilidade, numeroAssento, selecao, setSelecao }) {
               })
         } else if (selecionado === '') {
             setSelecionado('selecionado');
-            setSelecao([...selecao, numeroAssento]);
+            setSelecaoId([...selecaoId, idAssento]);
+            setSelecaoNome([...selecaoNome, nomeAssento])
         } else {
             setSelecionado('');
-            let desmarcado = (selecao.indexOf(numeroAssento));
-            selecao.splice(desmarcado, 1);
-            setSelecao([...selecao])
+            let desmarcadoId = (selecaoId.indexOf(idAssento));
+            let desmarcadoNome= (selecaoNome.indexOf(nomeAssento));
+            selecaoId.splice(desmarcadoId, 1);
+            selecaoNome.splice(desmarcadoNome, 1);
+            setSelecaoId([...selecaoId])
+            setSelecaoNome([...selecaoNome])
         }
     }
 
     return (
-        <li key={id} onClick={selecionarAssento} className={disponibilidade ? selecionado : 'indisponivel'}>{(numeroAssento).padStart(2, '0')}</li>
+        <li key={idAssento} onClick={selecionarAssento} className={disponibilidade ? selecionado : 'indisponivel'}>{(nomeAssento).padStart(2, '0')}</li>
     );
 }
 
@@ -138,10 +144,10 @@ function InfosComprador({ nome, cpf, setNome, setCpf }) {
     );
 }
 
-function Reservar({ selecao, nome, cpf, idFilme, idSessao, horario, nomeFilme, diaMes, history }) {
+function Reservar({ selecaoId, selecaoNome, nome, cpf, idFilme, idSessao, horario, nomeFilme, diaMes, history }) {
 
     const reserva = {
-        ids: selecao,
+        ids: selecaoId,
         name: nome,
         cpf: cpf
     };
@@ -149,13 +155,13 @@ function Reservar({ selecao, nome, cpf, idFilme, idSessao, horario, nomeFilme, d
 
     function confirmarReserva() {
         const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/cineflex/seats/book-many", reserva);
-        promise.then(history.push({pathname: `/sessoes/${idFilme}/assentos/${idSessao}/sucesso`, state: {selecao: selecao, nome: nome, cpf: cpf, nomeFilme: nomeFilme, horario: horario, diaMes: diaMes}}));
+        promise.then(() => (history.push({pathname: `/sessoes/${idFilme}/assentos/${idSessao}/sucesso`, state: {selecaoNome: selecaoNome, nome: nome, cpf: cpf, nomeFilme: nomeFilme, horario: horario, diaMes: diaMes}})));
         promise.catch((erro) => alert(erro));
     }
 
     return (
         <div className="centralizar-botao">
-            <button onClick={confirmarReserva} className={(selecao.length !== 0 && !!nome && !!cpf) ? 'reservar ativado' : 'reservar'}>Reservar assento(s)</button>
+            <button onClick={confirmarReserva} className={(selecaoId.length !== 0 && !!nome && !!cpf) ? 'reservar ativado' : 'reservar'}>Reservar assento(s)</button>
         </div>
     );
 }
